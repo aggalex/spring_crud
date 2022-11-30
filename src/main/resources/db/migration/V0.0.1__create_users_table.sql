@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS "user" (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    "role" VARCHAR(32) NOT NULL,
+    verification_token VARCHAR(511),
+    created TIMESTAMP DEFAULT(CURRENT_TIMESTAMP)
+);
