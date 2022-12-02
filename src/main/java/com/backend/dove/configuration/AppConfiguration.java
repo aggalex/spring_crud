@@ -1,6 +1,7 @@
 package com.backend.dove.configuration;
 
 import com.backend.dove.util.PasswordGenerator;
+import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,5 +26,10 @@ public class AppConfiguration {
                 PasswordGenerator.Characters.numbers
         )
                 .setLength(128);
+    }
+
+    @Bean
+    public Faker faker() {
+        return new Faker();
     }
 }

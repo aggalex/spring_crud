@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -34,4 +34,56 @@ public interface UserRepository extends JpaRepository<User, Long> {
         """)
     void clearUnverified(long before);
 
+    @Query("""
+        select f from User u
+        join u.friends f
+        where u.id = ?1
+    """)
+    Set<User> getFriends(long userId);
+
+    default Set<User> getFriends(User user) {
+        return getFriends(user.getId());
+    }
+
+    @Query("""
+        select u from User u
+        join u.friendRequests fr
+        where fr.id = ?1
+    """)
+    Set<User> getFriendRequestsTowards(long userId);
+
+    default Set<User> getFriendRequestsTowards(User user) {
+        return getFriendRequestsTowards(user.getId());
+    }
+
+    @Query("""
+        select count(b) > 0
+        from User u
+        join u.blocked b
+        where u.id = ?1
+        and b.id = ?2
+    """)
+    boolean isBlockedBy(long selfId, long potentiallyBlockedId);
+
+    default boolean isBlockedBy(User self, User potentiallyBlocked) {
+        return isBlockedBy(self.getId(), potentiallyBlocked.getId());
+    }
+
+    @Query("""
+        select b
+        from User u
+        join u.blocked b
+        where u.id = ?1
+    """)
+    Set<User> getBlocked(long userId);
+
+    default Set<User> getBlocked(User user) {
+        return getBlocked(user.getId());
+    }
+
+    default void makeFriends(User user1, User user2) {
+        user1.friend(user2);
+        save(user1);
+        save(user2);
+    }
 }
