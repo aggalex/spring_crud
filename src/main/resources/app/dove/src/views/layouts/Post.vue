@@ -11,12 +11,21 @@
   <div class="heading">
     <h1 class="title text">{{ state.post?.title }}</h1>
     <div class="horizontal-spacer"/>
-    <button class="fab-style centered-icon"
+    <button class="fab-style centered-icon non-templatable"
             v-if="dismissible"
             @click="closePost">
       <Icon>close</Icon>
     </button>
   </div>
+  <span class="poster-section hidden-template">
+    <button class="poster-button">
+      <Icon>
+        account_circle
+      </Icon>
+      Poster
+    </button>
+    <hr class="non-templatable">
+  </span>
   <p class="contents text">
     {{ state.post?.body || "Title" }}
   </p>
@@ -35,7 +44,6 @@
         {{ state.post?.views || "0" }}
       </span>
   </div>
-  <slot/>
 </Card>
 </template>
 
@@ -90,8 +98,12 @@ onMounted(() => props.post
 .heading {
   display: flex;
   flex-direction: row;
-  gap: 12px;
-  align-items: flex-end;
+  gap: 1rem;
+  align-items: flex-start;
+
+  .fab-style {
+    flex-shrink: 0;
+  }
 }
 
 .post.clickable:not(.template) {
@@ -99,21 +111,45 @@ onMounted(() => props.post
 }
 
 .title {
-  font-size: 24px;
+  font-size: 1.5rem;
   margin: 0;
 }
 
 .button-box {
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  gap: .5rem;
 
   span {
-    padding: 6px;
+    padding: .5rem;
   }
 
   .spacer {
     margin: auto;
+  }
+}
+
+.poster-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: .5rem;
+
+  hr {
+    width: 100%;
+    height: 0;
+    margin-left: .5rem;
+  }
+
+  .poster-button {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    align-items: center;
+
+    * {
+      font-size: 1rem;
+    }
   }
 }
 

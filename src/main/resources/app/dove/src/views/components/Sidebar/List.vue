@@ -11,7 +11,7 @@
 <style scoped lang="scss">
 ul {
   list-style-type: none;
-  padding: 10px;
+  padding: .5rem;
   margin: 0;
 }
 </style>

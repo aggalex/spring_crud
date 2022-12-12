@@ -1,9 +1,8 @@
 <template>
   <View>
     <Searchbar/>
-    <Post class="fill-view open" :post="post" dismissible>
-      <PostList :loader="() => PostApi.getCommentsOf(id)"></PostList>
-    </Post>
+    <Post class="fill-view open" :post="post" dismissible/>
+    <PostList :loader="comments"></PostList>
   </View>
 </template>
 
@@ -17,9 +16,13 @@ import Clamp from "@/views/components/containers/Clamp.vue";
 import View from "@/views/components/containers/View.vue";
 import Searchbar from "@/views/components/Searchbar.vue";
 
-let route = useRoute()
-let id = +route.params.id
-let post = computed(() => PostApi.getById(id))
+const route = useRoute()
+const id = +route.params.id
+const post = computed(() => PostApi.getById(id))
+
+function comments() {
+  return PostApi.getCommentsOf(id)
+}
 
 </script>
 

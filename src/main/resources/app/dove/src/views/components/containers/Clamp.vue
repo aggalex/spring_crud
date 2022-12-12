@@ -21,11 +21,11 @@ export default {
   width: 100%;
 
   .clamp-contents {
-    @media (min-width: 800px) {
-      width: min(700px, 70vw);
+    @media (min-width: 50rem) {
+      width: min(44rem, 70vw);
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 50rem) {
       width: 100%;
     }
   }

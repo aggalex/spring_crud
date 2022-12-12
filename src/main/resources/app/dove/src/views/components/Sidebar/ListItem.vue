@@ -14,8 +14,8 @@ const props = defineProps({
 <style scoped lang="scss">
 @import "../../../assets/scss/constants";
 li {
-  padding: 6px;
-  margin: 6px;
+  padding: .5rem;
+  margin: .5rem;
   border-radius: 6px;
 
   transition: background-color 200ms ease-out;
@@ -30,7 +30,7 @@ li {
   }
 
   &:not(:first-child) {
-    margin-top: 12px;
+    margin-top: 1rem;
   }
 }
 </style>

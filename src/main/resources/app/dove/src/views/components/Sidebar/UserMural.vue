@@ -31,11 +31,11 @@ import Overlay from "@/views/components/containers/Overlay.vue";
 <style scoped lang="scss">
 @import "../../../assets/scss/constants";
 
-$icon-size: 84px;
+$icon-size: 5rem;
 
 .images {
   position: relative;
-  height: 200px;
+  height: 12rem;
 
   .edit-button {
     position: absolute;
@@ -57,7 +57,7 @@ $icon-size: 84px;
     top: 0;
     height: 100%;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 
     .overlay {
       position: relative;
@@ -72,7 +72,7 @@ $icon-size: 84px;
 
   .user-box {
     position: absolute;
-    bottom: 12px;
+    bottom: 1rem;
     width: 100%;
     height: $icon-size;
     display: flex;

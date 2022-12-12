@@ -22,7 +22,7 @@ button {
   border: none;
   border-radius: 3px;
   margin: 0;
-  padding: 6px;
+  padding: .5rem;
   color: white;
   box-sizing: content-box;
   cursor: pointer;
@@ -36,10 +36,10 @@ button {
   }
 
   &.fab-style, &.fab {
-    width: 36px;
-    height: 36px;
-    margin: 12px;
-    border-radius: 12px;
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+    border-radius: 100%;
   }
 
   &.fab {
@@ -51,7 +51,7 @@ button {
 .fab-holder {
   position: fixed;
   bottom: 0;
-  right: 24px;
+  right: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -71,14 +71,19 @@ input {
   border-bottom: 3px solid transparentize(white, 0.8);
   outline: none;
   color: white;
-  padding: 6px;
-  font-size: 16px;
+  padding: .5rem;
+  font-size: 1rem;
   transition: 200ms border-bottom-color ease-in-out;
 
   &:focus {
     outline: none;
     border-color: $accent;
   }
+}
+
+@keyframes template-animation {
+  0% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
 }
 
 .template p,
@@ -90,17 +95,34 @@ input {
 .template h4,
 .template h5,
 .template button {
-  color: transparent !important;
-  background: transparentize(white, 0.9);
-  border-radius: 2px;
-  cursor: default;
+  &:not(.non-templatable, .non-templatable *) {
+    color: transparent !important;
+    background-size: 400% 400% !important;
+    background: linear-gradient(
+                    -45deg,
+                    transparentize(white, 0.9) 40%,
+                    transparentize(white, 0.85) 45%,
+                    transparentize(white, 0.7) 50%,
+                    transparentize(white, 0.85) 55%,
+                    transparentize(white, 0.9) 60%
+    );
+    animation: template-animation 3s ease infinite;
+    border-radius: 2px;
+    cursor: default;
 
-  &.text.title {
-    max-width: 50%;
-  }
+    &.text.title {
+      max-width: 50%;
+    }
 
-  &.text {
-    max-width: 70%;
+    &.hidden-template {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
+
+    &.text {
+      max-width: 70%;
+    }
   }
 }
 
@@ -125,17 +147,17 @@ input {
 }
 
 .small * {
-  font-size: 12px;
+  font-size: .75rem;
 }
 
 .medium * {
-  font-size: 18px;
+  font-size: 1.5rem;
 }
 
 .large * {
-  font-size: 24px;
+  font-size: 2rem;
 }
 
 .xlarge * {
-  font-size: 36px;
+  font-size: 3rem;
 }

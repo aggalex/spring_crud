@@ -15,7 +15,7 @@ import Icon from "@/views/components/Icon.vue";
 @import "@/assets/scss/main.scss";
 
 
-@media (max-width: 800px) {
+@media (max-width: 50rem) {
   .hide-on-small {
     visibility: hidden;
   }
@@ -25,13 +25,13 @@ import Icon from "@/views/components/Icon.vue";
   //@include MainSized;
 
   position: sticky;
-  top: 12px;
+  top: 1rem;
   background: transparentize(white, 0.9);
   backdrop-filter: blur(10px);
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1rem;
   flex-direction: row;
 }
 

@@ -14,8 +14,8 @@
 
 .card {
   border-radius: 6px;
-  margin: 12px 12px 24px;
-  padding: 12px 24px;
+  margin: 1rem 1rem 2rem;
+  padding: 1rem 2rem;
   background-color: $background-special;
   transition-duration: 300ms !important;
   transition-timing-function: ease-in-out !important;

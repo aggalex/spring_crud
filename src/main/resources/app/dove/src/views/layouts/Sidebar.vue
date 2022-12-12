@@ -49,30 +49,24 @@ function show() {
 }
 
 .sidebar {
-  position: sticky;
-  top: 0;
-  left: 0;
   height: 100vh;
   background: $background-special;
   overflow: scroll;
-  width: 250px;
+  width: 15rem;
   z-index: 300;
 
-  @media (max-width: 800px) {
+  @media (max-width: 50rem) {
     width: 100vw;
   }
-}
-
-.transition {
 }
 
 .top-left {
   z-index: 299;
   position: fixed;
 
-  @media (max-width: 800px) {
-    width: 46px;
-    height: 46px;
+  @media (max-width: 50rem) {
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
   }
 }
 </style>

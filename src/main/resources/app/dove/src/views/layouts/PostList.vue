@@ -1,7 +1,6 @@
 <template>
   <Transition v-for="(post, index) in state.posts" name="fade">
     <Post
-          v-if="state.foreground === null || state.foreground === index"
           :post="post"
           :key="index"
           @open="(open) => foreground(index, open)"
@@ -26,8 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const state = reactive({
   posts: load(),
-  foreground: null as number | null,
-  boundary: null
 })
 
 function load(): Promise<PostDto>[] {
@@ -41,14 +38,6 @@ function load(): Promise<PostDto>[] {
           else throw new Error("No post")
         })
       )
-}
-
-function foreground(index: number, open: boolean) {
-  if (open) {
-    state.foreground = index
-  } else {
-    state.foreground = null
-  }
 }
 
 onActivated(() => console.log("Activated"));
