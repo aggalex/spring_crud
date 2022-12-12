@@ -160,10 +160,6 @@ public class AccountTests {
             login().andExpect(status().isOk())
                     .andExpect(jsonPath("$.email").value(registerDto.getEmail()))
                     .andExpect(jsonPath("$.username").value(registerDto.getUsername()));
-
-            logout().andExpect(
-                    status().isOk()
-            );
         } finally {
             userRepository.deleteUserByEmail(registerDto.getEmail());
         }

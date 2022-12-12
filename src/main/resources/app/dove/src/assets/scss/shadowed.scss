@@ -1,0 +1,20 @@
+@function shadow($factor) {
+  $step: $factor * 1px;
+  @return drop-shadow(0 ($step * 2) calc($step * $factor) transparentize(black, 1 - $factor * 0.1))
+}
+
+@mixin Shadowed {
+  transition: 300ms filter ease-in-out;
+
+  filter:
+          shadow(1)
+          shadow(2);
+
+  &:hover {
+    filter:
+            shadow(1)
+            shadow(2)
+            shadow(3)
+            shadow(4);
+  }
+}

@@ -1,0 +1,141 @@
+@import "constants.scss";
+@import "transitions";
+@import "shadowed.scss";
+
+body {
+  background: $background;
+  margin: 0;
+
+  color: white;
+
+  font-family: Inter, sans-serif;
+}
+
+.centered-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  margin: 0;
+  padding: 6px;
+  color: white;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  &:hover {
+    background: transparentize(white, 0.8);
+  }
+
+  &:active {
+    background: transparentize(white, 0.6);
+  }
+
+  &.fab-style, &.fab {
+    width: 36px;
+    height: 36px;
+    margin: 12px;
+    border-radius: 12px;
+  }
+
+  &.fab {
+    @include Shadowed;
+    background: $accent;
+  }
+}
+
+.fab-holder {
+  position: fixed;
+  bottom: 0;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+p {
+  background: transparent;
+}
+
+@mixin MainSized {
+
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparentize(white, 0.8);
+  outline: none;
+  color: white;
+  padding: 6px;
+  font-size: 16px;
+  transition: 200ms border-bottom-color ease-in-out;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+  }
+}
+
+.template p,
+.template span,
+.template a,
+.template h1,
+.template h2,
+.template h3,
+.template h4,
+.template h5,
+.template button {
+  color: transparent !important;
+  background: transparentize(white, 0.9);
+  border-radius: 2px;
+  cursor: default;
+
+  &.text.title {
+    max-width: 50%;
+  }
+
+  &.text {
+    max-width: 70%;
+  }
+}
+
+.shadowed {
+  @include Shadowed;
+}
+
+.horizontal-spacer {
+  margin-left: auto;
+}
+
+.vertical-spacer {
+  margin-top: auto;
+}
+
+.align-left {
+  text-align: start;
+}
+
+.ellipsize {
+  text-overflow: ellipsis;
+}
+
+.small * {
+  font-size: 12px;
+}
+
+.medium * {
+  font-size: 18px;
+}
+
+.large * {
+  font-size: 24px;
+}
+
+.xlarge * {
+  font-size: 36px;
+}

@@ -17,21 +17,17 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.apply(new HttpConfigurer())
-
                 .and()
-                .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-
-                .and()
-                .authorizeHttpRequests()
-                .antMatchers("/api/user/**").permitAll()
-                .anyRequest().authenticated()
-
-                .and()
+                .csrf((csrf) -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
+                .sessionManagement((mngm) -> mngm
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                )
+                .authorizeHttpRequests((auth) -> auth
+                        .antMatchers("/api/user/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .build();
     }
 }

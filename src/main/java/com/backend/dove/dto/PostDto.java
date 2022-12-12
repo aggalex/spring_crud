@@ -10,7 +10,7 @@ public class PostDto {
 
     long poster;
 
-    PostParentDto parentTitle;
+    PostParentDto parent;
 
     long likes;
 
@@ -56,12 +56,12 @@ public class PostDto {
         return this;
     }
 
-    public PostParentDto getParentTitle() {
-        return parentTitle;
+    public PostParentDto getParent() {
+        return parent;
     }
 
-    public PostDto setParentTitle(PostParentDto parentTitle) {
-        this.parentTitle = parentTitle;
+    public PostDto setParent(PostParentDto parent) {
+        this.parent = parent;
         return this;
     }
 
