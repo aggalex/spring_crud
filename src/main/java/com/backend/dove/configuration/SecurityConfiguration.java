@@ -26,6 +26,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                 )
                 .authorizeHttpRequests((auth) -> auth
                         .antMatchers("/api/user/**").permitAll()
+                        .antMatchers("GET").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

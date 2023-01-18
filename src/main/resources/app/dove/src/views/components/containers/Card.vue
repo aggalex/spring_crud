@@ -8,6 +8,14 @@
 
 </script>
 
+<style lang="scss">
+.card {
+  .padded, &:not(.no-padding) {
+    padding: 1rem 2rem;
+  }
+}
+</style>
+
 <style scoped lang="scss">
 @import "../../../assets/scss/constants";
 @import "../../../assets/scss/shadowed";
@@ -15,7 +23,6 @@
 .card {
   border-radius: 6px;
   margin: 1rem 1rem 2rem;
-  padding: 1rem 2rem;
   background-color: $background-special;
   transition-duration: 300ms !important;
   transition-timing-function: ease-in-out !important;

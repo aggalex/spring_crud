@@ -23,16 +23,20 @@ import Icon from "@/views/components/Icon.vue";
 
 .searchbar {
   //@include MainSized;
-
+  display: flex;
+  flex-direction: row;
   position: sticky;
   top: 1rem;
   background: transparentize(white, 0.9);
   backdrop-filter: blur(10px);
   z-index: 2;
-  display: flex;
   align-items: center;
   gap: 1rem;
-  flex-direction: row;
+
+  .card-contents {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 input {

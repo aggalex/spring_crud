@@ -1,4 +1,4 @@
-package com.backend.dove.unit;
+package com.backend.dove.unit.service;
 
 import com.backend.dove.entity.Post;
 import com.backend.dove.entity.User;

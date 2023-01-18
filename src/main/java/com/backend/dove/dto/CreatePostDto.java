@@ -1,5 +1,7 @@
 package com.backend.dove.dto;
 
+import com.backend.dove.entity.Post;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -14,6 +16,15 @@ public class CreatePostDto {
     String body;
 
     Long parent;
+
+    public CreatePostDto() {
+
+    }
+
+    public CreatePostDto(Post post) {
+        setBody(post.getBody());
+        setTitle(post.getTitle());
+    }
 
     public String getTitle() {
         return title;

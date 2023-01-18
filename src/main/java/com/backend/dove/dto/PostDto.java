@@ -1,5 +1,7 @@
 package com.backend.dove.dto;
 
+import com.backend.dove.entity.Post;
+
 public class PostDto {
 
     long id;
@@ -19,6 +21,23 @@ public class PostDto {
     long views;
 
     boolean deleted;
+
+    public PostDto() {
+
+    }
+
+    public PostDto(Post post) {
+        setTitle(post.getTitle());
+        setBody(post.getBody());
+        setId(post.getId());
+        setDeleted(post.isDeleted());
+        setPoster(post.getPoster().getId());
+        if (post.getParent() != null)
+            setParent(new PostParentDto(post.getParent()));
+        setLikes(post.getLikes());
+        setDislikes(post.getDislikes());
+        setViews(post.getViews());
+    }
 
     public long getId() {
         return id;

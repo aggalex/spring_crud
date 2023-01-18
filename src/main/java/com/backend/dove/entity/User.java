@@ -3,12 +3,14 @@ package com.backend.dove.entity;
 
 import com.backend.dove.util.PasswordGenerator;
 import com.github.javafaker.Faker;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "\"User\"")
@@ -20,6 +22,94 @@ public class User implements HasId {
         @Override
         public String getAuthority() {
             return this.toString();
+        }
+    }
+
+    public static class Principal implements UserDetails {
+        private String username;
+        private String email;
+        private String password;
+        private Long id;
+        private Collection<? extends GrantedAuthority> authorities;
+
+        public static Principal get() {
+            return getOptional()
+                    .orElse(null);
+        }
+
+        public static Optional<Principal> getOptional() {
+            return Optional.ofNullable(SecurityContextHolder
+                    .getContext()
+                    .getAuthentication())
+                    .map(auth -> ((Principal) auth.getPrincipal())
+                            .setAuthorities(auth.getAuthorities())
+                            .setPassword((String) auth.getCredentials()));
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public boolean isAccountNonExpired() {
+            return false;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+            return false;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        public Principal setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public Principal setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public Principal setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return authorities;
+        }
+
+        @Override
+        public String getPassword() {
+            return password;
+        }
+
+        public Principal setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Principal setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+            this.authorities = authorities;
+            return this;
         }
     }
 
@@ -85,8 +175,24 @@ public class User implements HasId {
         return this;
     }
 
+    public UsernamePasswordAuthenticationToken intoToken() {
+        return new UsernamePasswordAuthenticationToken(
+                new Principal()
+                        .setId(this.id)
+                        .setEmail(this.email)
+                        .setUsername(this.username),
+                this.password,
+                List.of(this.role)
+        );
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public User setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getEmail() {

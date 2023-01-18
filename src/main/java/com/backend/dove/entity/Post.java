@@ -133,6 +133,9 @@ public class Post implements HasId {
     }
 
     public Post setParent(Post parent) {
+        if (parent == null)
+            return this;
+
         this.parent = parent;
         parent.addComment(this);
         return this;

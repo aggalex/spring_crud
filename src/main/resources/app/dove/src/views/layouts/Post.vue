@@ -34,10 +34,7 @@
       <Icon>thumb_up</Icon>
       {{ state.post?.likes || "Content" }}
     </button>
-    <button>
-      <Icon>chat</Icon>
-      Comment
-    </button>
+    <slot/>
     <div class="spacer"/>
     <span class="last">
         <Icon>visibility</Icon>
@@ -49,12 +46,12 @@
 
 <script setup lang="ts">
 import {computed, onMounted, reactive} from "vue";
-import type { PostDto } from "@/api/Post";
 import Card from "@/views/components/containers/Card.vue";
 import Icon from "@/views/components/Icon.vue";
 import PostList from "@/views/layouts/PostList.vue";
-import PostApi from "@/api/Post";
+import PostApi from "@/api/post/api";
 import {useRouter} from "vue-router";
+import type {PostDto} from "@/api/post/dto/PostDto";
 
 interface Props {
   post: Promise<PostDto>,

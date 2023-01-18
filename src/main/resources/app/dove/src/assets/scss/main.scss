@@ -65,6 +65,44 @@ p {
 
 }
 
+hr {
+  border: none;
+  border-bottom: 1px transparentize(white, 0.8) solid;
+  margin: 0;
+  padding: 0;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+textarea {
+  background: transparent;
+  border: 1px solid transparentize(white, 0.8);
+  border-radius: 6px;
+  resize: vertical;
+  outline: none;
+  color: white;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+  }
+}
+
+.like-textarea {
+  border: 1px solid transparentize(white, 0.8);
+  border-radius: 6px;
+}
+
 input {
   background: transparent;
   border: none;
@@ -74,6 +112,10 @@ input {
   padding: .5rem;
   font-size: 1rem;
   transition: 200ms border-bottom-color ease-in-out;
+
+  &.no-border {
+    border: none;
+  }
 
   &:focus {
     outline: none;
@@ -94,28 +136,36 @@ input {
 .template h3,
 .template h4,
 .template h5,
-.template button {
+.template button,
+.template input {
   &:not(.non-templatable, .non-templatable *) {
     color: transparent !important;
     background-size: 400% 400% !important;
-    background: linear-gradient(
-                    -45deg,
-                    transparentize(white, 0.9) 40%,
-                    transparentize(white, 0.85) 45%,
-                    transparentize(white, 0.7) 50%,
-                    transparentize(white, 0.85) 55%,
-                    transparentize(white, 0.9) 60%
-    );
-    animation: template-animation 3s ease infinite;
     border-radius: 2px;
     cursor: default;
+
+    &:not(.transparent-template) {
+      background: linear-gradient(
+                      -45deg,
+                      transparentize(white, 0.9) 40%,
+                      transparentize(white, 0.85) 45%,
+                      transparentize(white, 0.7) 50%,
+                      transparentize(white, 0.85) 55%,
+                      transparentize(white, 0.9) 60%
+      );
+      animation: template-animation 3s ease infinite;
+    }
+
+    &.transparent-template {
+      visibility: hidden !important;
+    }
 
     &.text.title {
       max-width: 50%;
     }
 
     &.hidden-template {
-      visibility: hidden;
+      visibility: hidden !important;
       width: 0;
       height: 0;
     }
@@ -126,16 +176,23 @@ input {
   }
 }
 
+button {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .shadowed {
   @include Shadowed;
 }
 
 .horizontal-spacer {
-  margin-left: auto;
+  margin-left: auto !important;
 }
 
 .vertical-spacer {
-  margin-top: auto;
+  margin-top: auto !important;
 }
 
 .align-left {

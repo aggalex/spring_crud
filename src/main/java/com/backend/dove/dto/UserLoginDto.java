@@ -19,16 +19,6 @@ public class UserLoginDto {
     @Max(255)
     String email;
 
-    public UsernamePasswordAuthenticationToken intoToken(
-            Collection<? extends GrantedAuthority> roles
-    ) {
-        return new UsernamePasswordAuthenticationToken(
-                email,
-                password,
-                roles
-        );
-    }
-
     public String getPassword() {
         return password;
     }

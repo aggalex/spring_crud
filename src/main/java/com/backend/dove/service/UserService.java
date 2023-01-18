@@ -64,9 +64,7 @@ public class UserService {
             );
         }
 
-        var authentication = loginDto.intoToken(
-                List.of(user.getRole())
-        );
+        var authentication = user.intoToken();
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

@@ -1,5 +1,7 @@
 package com.backend.dove.dto;
 
+import com.backend.dove.entity.Post;
+
 public class PostParentDto {
 
     long id;
@@ -7,6 +9,14 @@ public class PostParentDto {
     String title;
 
     String body;
+
+    public PostParentDto() {}
+
+    public PostParentDto(Post post) {
+        setId(post.getId());
+        setBody(post.getBody());
+        setTitle(post.getTitle());
+    }
 
     public long getId() {
         return id;
