@@ -8,16 +8,16 @@
       <div class="overlay"></div>
     </div>
     <div class="user-box">
-      <Overlay class="icon-section">
+      <Overlay v-if="info !== null" class="icon-section">
         <img class="overlay">
         <button class="centered-icon overlay top">
           <Icon class="image-icon">add_a_photo</Icon>
         </button>
       </Overlay>
-      <button class="user-info align-left">
-        <b>username</b>
+      <button v-if="info !== null" class="user-info align-left">
+        <b>{{ info?.username }}</b>
         <br>
-        email@email.com
+        {{ info?.email }}
       </button>
     </div>
   </div>
@@ -26,6 +26,14 @@
 <script setup lang="ts">
 import Icon from "@/views/components/Icon.vue";
 import Overlay from "@/views/components/containers/Overlay.vue";
+import {useUserStore} from "@/store/userStore";
+import {computed} from "vue";
+import type {UserInfoDto} from "@/api/user/dto/UserInfoDto";
+
+let userStore = useUserStore();
+
+let info = computed(() => userStore.info as UserInfoDto | null)
+
 </script>
 
 <style scoped lang="scss">

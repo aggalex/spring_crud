@@ -6,8 +6,11 @@
       </button>
       <UserMural/>
       <List>
-        <ListItem>Item 1</ListItem>
-        <ListItem>Item 2</ListItem>
+        <ListItem v-if="info !== null" @click="login">Switch User</ListItem>
+        <ListItem v-if="info !== null" @click="logout">Log Out</ListItem>
+
+        <ListItem v-if="info === null" @click="login">Log In</ListItem>
+        <ListItem v-if="info === null" @click="register">Register</ListItem>
       </List>
 
     </div>
@@ -22,8 +25,16 @@
 import ListItem from "@/views/components/Sidebar/ListItem.vue";
 import List from "@/views/components/Sidebar/List.vue";
 import UserMural from "@/views/components/Sidebar/UserMural.vue";
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import Icon from "@/views/components/Icon.vue";
+import {useUserStore} from "@/store/userStore";
+import {UserInfoDto} from "@/api/user/dto/UserInfoDto";
+import {useRouter} from "vue-router";
+
+let router = useRouter()
+
+let userStore = useUserStore();
+let info = computed(() => userStore.info as UserInfoDto | null)
 
 let state = reactive({
   show: true
@@ -35,6 +46,18 @@ function hide() {
 
 function show() {
   state.show = true;
+}
+
+function login() {
+  router.push("/login")
+}
+
+function register() {
+  router.push("/register")
+}
+
+function logout() {
+  userStore.logout()
 }
 
 </script>

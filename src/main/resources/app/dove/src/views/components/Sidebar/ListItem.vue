@@ -1,11 +1,13 @@
 <template>
-  <li>
+  <li @click="emits('click')">
     <div class="icon"></div>
     <span><slot/></span>
   </li>
 </template>
 
 <script setup lang="ts">
+const emits = defineEmits(["click"])
+
 const props = defineProps({
   icon: String
 });
