@@ -32,7 +32,7 @@
   <div class="button-box small">
     <button>
       <Icon>thumb_up</Icon>
-      {{ state.post?.likes || "Content" }}
+      {{ state.post?.likes || "Like" }}
     </button>
     <slot/>
     <div class="spacer"/>

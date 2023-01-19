@@ -2,6 +2,7 @@ import type {PostDto} from "@/api/post/dto/PostDto";
 import type {CreatePostDto} from "@/api/post/dto/CreatePostDto";
 import {faker} from "@faker-js/faker";
 import {CONFIG} from "@/api/post/config";
+import type {Pagination} from "@/util/request";
 
 
 const repository: PostDto[] = new Array(CONFIG.pageLength)
@@ -23,7 +24,7 @@ const repository: PostDto[] = new Array(CONFIG.pageLength)
     }))
 
 export default {
-    async get() {
+    async get(pagination?: Pagination) {
         return repository
     },
 
@@ -35,7 +36,7 @@ export default {
             return Promise.resolve(posts[0])
     },
 
-    async getCommentsOf(id: number): Promise<PostDto[]> {
+    async getCommentsOf(id: number, pageable?: Pagination): Promise<PostDto[]> {
         let posts = repository.filter(post => post.parent?.id === id)
         if (posts.length === 0)
             return Promise.reject("No comments found")

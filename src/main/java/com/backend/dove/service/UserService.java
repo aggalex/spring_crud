@@ -5,6 +5,7 @@ import com.backend.dove.dto.*;
 import com.backend.dove.entity.User;
 import com.backend.dove.repository.UserRepository;
 import com.backend.dove.util.PasswordGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,9 @@ public class UserService {
     private PasswordGenerator generator;
 
     private SpringTemplateEngine templateEngine;
+
+    @Value("${registration.require-verification-mail}")
+    private boolean requireVerificationMail;
 
     public UserService(UserRepository repository,
                        PasswordEncoder passwordEncoder,
@@ -76,7 +80,7 @@ public class UserService {
     }
 
     public void register(UserRegisterDto registerDto, User.Role role) throws IOException {
-        var token = generator.generate();
+        var token = requireVerificationMail? generator.generate(): null;
 
         var user = new User()
                 .setEmail(registerDto.getEmail())
@@ -87,10 +91,12 @@ public class UserService {
                 .setVerificationToken(token)
                 .setRole(role);
 
-        mailService.sendSimpleMail(
-                validationMail(templateEngine, user, token)
-                .setRecipient(user.getEmail())
-        );
+        if (requireVerificationMail) {
+            mailService.sendSimpleMail(
+                    validationMail(templateEngine, user, token)
+                            .setRecipient(user.getEmail())
+            );
+        }
 
         repository.save(user);
     }

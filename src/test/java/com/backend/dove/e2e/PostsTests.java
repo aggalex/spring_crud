@@ -5,6 +5,7 @@ import com.backend.dove.dto.PostDto;
 import com.backend.dove.dto.UpdatePostDto;
 import com.backend.dove.entity.Post;
 import com.backend.dove.entity.User;
+import com.backend.dove.repository.PostRepository;
 import com.backend.dove.util.PasswordGenerator;
 import com.backend.dove.util.annotations.LoggedIn;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +46,19 @@ public class PostsTests {
     @Autowired
     PasswordGenerator generator;
 
+    @Autowired
+    PostRepository repository;
+
+    @Test
+    public void getPosts() throws Exception {
+        this.mvc.perform(
+                get("/api/post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+        )
+                .andExpect(status().isOk());
+    }
+
     @Test
     @LoggedIn
     public void createPublicPosts() throws Exception {
@@ -69,20 +83,41 @@ public class PostsTests {
     public void createPublicComment() throws Exception {
         var result = createAPost();
 
-        var comment = new CreatePostDto(new Post()
-                .randomise(faker))
+        var commentDto = new CreatePostDto(new Post()
+                .randomise(faker)
+                .setPrivate(false))
                 .setParent(result.getId());
-        var commentJson = objectMapper.writeValueAsString(comment);
+        var commentJson = objectMapper.writeValueAsString(commentDto);
 
-        this.mvc.perform(
+        var commentStr = this.mvc.perform(
                 post("/api/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentJson)
                         .with(csrf())
         )
                 .andExpect(status().isOk())
-                .andDo(res -> System.out.println(res.getResponse().getContentAsString()))
-                .andExpect(jsonPath("$.parent.id").value(result.getId()));
+                .andDo(res -> {
+                    var str = res.getResponse().getContentAsString();
+                    System.out.println(str);
+                })
+                .andExpect(jsonPath("$.parent.id").value(result.getId()))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        var comment = objectMapper.readValue(commentStr, PostDto.class);
+
+        this.mvc.perform(
+                        get("/api/post/" + comment.getParent().getId() + "/comments")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf())
+                )
+                .andExpect(status().isOk())
+                .andDo(res -> {
+                    var str = res.getResponse().getContentAsString();
+                    System.out.println(str);
+                })
+                .andExpect(jsonPath("$[0].id").value(comment.getId()));
     }
 
     @Test
@@ -95,7 +130,7 @@ public class PostsTests {
                 .setBody("New body of post");
         var json = objectMapper.writeValueAsString(post);
 
-        this.mvc.perform(
+        var commentStr = this.mvc.perform(
                 patch("/api/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
@@ -105,7 +140,6 @@ public class PostsTests {
                 .andExpect(jsonPath("$.body").value(post.getBody()))
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").exists());
-
     }
 
     @Test

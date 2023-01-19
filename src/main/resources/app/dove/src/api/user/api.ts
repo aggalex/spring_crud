@@ -8,7 +8,11 @@ import mock from "@/api/user/mock";
 const userApi = {
     async login (dto: UserLoginDto): Promise<UserInfoDto> {
         return request("/api/user/login", {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                ...HEADERS.application.json
+            },
+            body: JSON.stringify(dto)
         })
     },
     async logout () {

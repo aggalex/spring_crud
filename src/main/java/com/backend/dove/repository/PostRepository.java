@@ -6,6 +6,7 @@ import com.backend.dove.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,9 +29,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("""
             select p from Post p
             join p.poster.friends f
-            where (p.privatePost = false or f.id = ?1) and p.parent = ?2
+            where ((p.privatePost = false) or (f.id = ?1)) and p.parent.id = ?2
             """)
-    List<Post> getVisibleCommentsFor(long userId, long postId, Pageable pageable);
+    List<Post> getVisibleCommentsFor(
+            long userId,
+            long postId,
+            Pageable pageable
+    );
 
     default List<Post> getVisibleCommentsFor(User user, Post post, Pageable pageable) {
         return getVisibleCommentsFor(user.getId(), post.getId(), pageable);
@@ -44,7 +49,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
         select p from Post p
-        where p.privatePost = false and p.parent = ?2
+        where p.privatePost = false and p.parent.id = ?1
     """)
     List<Post> getPublicComments(long postId, Pageable pageable);
 

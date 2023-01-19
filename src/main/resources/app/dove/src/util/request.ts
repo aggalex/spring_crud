@@ -1,5 +1,19 @@
-const BASE_URL = "/";
+const BASE_URL = "http://localhost:8080";
 const CSRF_COOKIE_NAME = "";
+
+export interface Pagination {
+    page: number,
+    size: number
+}
+
+export const Pagination = {
+    default: { size: 10 },
+    to_url(pagination?: Pagination) {
+        if (!pagination)
+            return ""
+        return `?page=${pagination.page}&size=${pagination.size}`
+    }
+}
 
 export class StatusError extends Error {
     constructor(
@@ -41,18 +55,25 @@ export const HEADERS = {
         }
 
         return {
-            'X-CSRF-TOKEN': csrf
+            'XSRF-TOKEN': csrf
         }
     }
 }
 
 export function request<T>(
     info: string,
-    init?: RequestInit & { validator?(t: any): t is T }
+    init?: RequestInit & {
+        validator?(t: any): t is T,
+        pagination?: Pagination
+    }
 ): Promise<T> {
     const validator = init?.validator || ((_) => true)
-    return fetch(BASE_URL + info, {
+
+    console.log("Requesting: ", BASE_URL + info + Pagination.to_url(init?.pagination), init)
+
+    return fetch(BASE_URL + info + Pagination.to_url(init?.pagination), {
         ...init,
+        credentials: "include",
         headers: {
             ...HEADERS.csrf,
             ...init?.headers

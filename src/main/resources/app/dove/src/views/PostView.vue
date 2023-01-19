@@ -21,20 +21,15 @@ import Editor from "@/views/layouts/Editor.vue";
 const route = useRoute()
 const id = +route.params.id
 const post = computed(() => {
-  return PostApi.getById(id)
+  return PostApi.getById(id, {
+    page: 1,
+    size: 10
+  })
 })
 
 const state = reactive({
   loaded: false
 })
-
-function onSubmit({title, body}) {
-  PostApi.post({
-    title,
-    body,
-    parent: id
-  })
-}
 
 function comments() {
   console.log("Getting Comments")

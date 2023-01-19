@@ -28,6 +28,7 @@ public class MockUserSecurityContextFactory implements WithSecurityContextFactor
 
         var user = repository.save(
                 new User().randomise(generator, faker)
+                        .setRole(User.Role.USER)
         );
 
         context.setAuthentication(user.intoToken());

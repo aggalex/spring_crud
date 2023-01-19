@@ -5,6 +5,7 @@ import com.backend.dove.dto.PostDto;
 import com.backend.dove.dto.UpdatePostDto;
 import com.backend.dove.service.PostService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;

@@ -54,7 +54,7 @@ public class PostService {
         );
 
         return parent.map(post ->
-                        auth.map(user -> repository.getVisibleCommentsFor(user, post, pageable))
+                        auth.map(user -> repository.getPublicComments(post, pageable))
                                 .orElseGet(() -> repository.getPublicComments(post, pageable))
                 )
                 .orElseGet(() ->

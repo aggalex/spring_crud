@@ -5,7 +5,7 @@
       <input placeholder="email" v-model="state.email" type="email"/>
       <input placeholder="password" v-model="state.password" type="password">
       <UserViewButton @click="login" :loading="state.loading">Login</UserViewButton>
-      <h4 class="error" v-if="state.error">{{ state.error }}</h4>
+      <h4 class="error" v-if="state.error">{{ state.error.error }}</h4>
     </div>
   </View>
 </template>

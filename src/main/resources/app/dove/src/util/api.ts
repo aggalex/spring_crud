@@ -1,5 +1,5 @@
 export const MOCK_CONFIG = {
-    enabled: true,
+    enabled: false,
     delay: 3000
 };
 

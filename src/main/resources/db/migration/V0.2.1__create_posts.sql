@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "posts" (
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     body VARCHAR(10000) NOT NULL,
-    poster BIGINT,
+    poster BIGINT NOT NULL,
     parent BIGINT,
     likes BIGINT DEFAULT 0,
     dislikes BIGINT DEFAULT 0,

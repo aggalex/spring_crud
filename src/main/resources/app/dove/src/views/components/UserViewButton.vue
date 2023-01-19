@@ -2,9 +2,9 @@
   <button @click="emit('click')"><slot/>
     <Transition class="transition" name="fade" mode="out-in">
       <span v-if="props.loading">
-        <FlowerSpinner size="30"/>
-        <SemipolarSpinner size="30"/>
-        <RadarSpinner size="30"/>
+        <FlowerSpinner :size="30"/>
+        <SemipolarSpinner :size="30"/>
+        <RadarSpinner :size="30"/>
       </span>
     </Transition>
   </button>

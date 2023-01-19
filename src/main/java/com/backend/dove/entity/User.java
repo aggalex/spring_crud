@@ -41,6 +41,7 @@ public class User implements HasId {
             return Optional.ofNullable(SecurityContextHolder
                     .getContext()
                     .getAuthentication())
+                    .filter(auth -> auth.getPrincipal() instanceof Principal)
                     .map(auth -> ((Principal) auth.getPrincipal())
                             .setAuthorities(auth.getAuthorities())
                             .setPassword((String) auth.getCredentials()));

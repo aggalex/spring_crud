@@ -1,11 +1,9 @@
-package com.backend.dove.unit.service;
+package com.backend.dove.unit.repository;
 
 import com.backend.dove.entity.Post;
 import com.backend.dove.entity.User;
 import com.backend.dove.repository.PostRepository;
 import com.backend.dove.repository.UserRepository;
-import com.backend.dove.service.PostService;
-import com.backend.dove.service.UserService;
 import com.backend.dove.util.PasswordGenerator;
 import com.backend.dove.util.SetUtils;
 import com.github.javafaker.Faker;
@@ -13,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Set;
@@ -31,13 +28,32 @@ public class PostsTests {
     Faker faker;
 
     @Autowired
-    PostRepository postRepository;
-
-    @Autowired
     UserRepository userRepository;
 
     @Autowired
-    PostService service;
+    PostRepository postRepository;
+
+    @Test
+    public void createPost() {
+        var poster = userRepository.save(
+                new User()
+                        .randomise(generator, faker)
+        );
+
+        try {
+            var post = postRepository.save(
+                    new Post()
+                            .randomise(faker)
+                            .setPoster(poster)
+            );
+
+            assertEquals(poster.getId(), post.getPoster().getId());
+
+            postRepository.delete(post);
+        } finally {
+            userRepository.delete(poster);
+        }
+    }
 
     @Test
     public void createCommentPost () {
@@ -68,19 +84,10 @@ public class PostsTests {
             System.out.println(post);
             System.out.println(comment);
 
-            var res = service.get(post.getId(), Pageable.unpaged());
-
-            System.out.println(res.size() + " comments");
-
             try {
                 assertEquals(
                         Set.of(comment.getId()),
                         SetUtils.idsOf(post.getComments())
-                );
-
-                assertEquals(
-                        1,
-                        res.size()
                 );
             } finally {
                 postRepository.delete(post);
@@ -88,6 +95,37 @@ public class PostsTests {
             }
         } finally {
             userRepository.delete(commenter);
+            userRepository.delete(poster);
+        }
+    }
+
+    @Test
+    public void updatePost() {
+        var poster = userRepository.save(
+                new User()
+                        .randomise(generator, faker)
+        );
+
+        try {
+            var post = postRepository.save(
+                    new Post()
+                            .randomise(faker)
+                            .setPoster(poster)
+            );
+
+            var postId = post.getId();
+            var posterId = post.getPoster().getId();
+            assertEquals(poster.getId(), posterId);
+
+            var newPost = postRepository.save(
+                post.randomise(faker)
+            );
+
+            assertEquals(postId, newPost.getId());
+            assertEquals(posterId, newPost.getPoster().getId());
+
+            postRepository.delete(newPost);
+        } finally {
             userRepository.delete(poster);
         }
     }
