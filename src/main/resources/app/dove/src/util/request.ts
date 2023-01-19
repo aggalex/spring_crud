@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:8080";
-const CSRF_COOKIE_NAME = "";
+const CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
 export interface Pagination {
     page: number,
@@ -55,7 +55,7 @@ export const HEADERS = {
         }
 
         return {
-            'XSRF-TOKEN': csrf
+            'X-XSRF-TOKEN': csrf
         }
     }
 }
@@ -69,16 +69,21 @@ export function request<T>(
 ): Promise<T> {
     const validator = init?.validator || ((_) => true)
 
-    console.log("Requesting: ", BASE_URL + info + Pagination.to_url(init?.pagination), init)
-
-    return fetch(BASE_URL + info + Pagination.to_url(init?.pagination), {
+    let fetch_init: RequestInit = {
         ...init,
         credentials: "include",
+        // @ts-ignore
         headers: {
-            ...HEADERS.csrf,
+            ...HEADERS.csrf(),
             ...init?.headers
         }
-    })
+    };
+
+    let url = BASE_URL + info + Pagination.to_url(init?.pagination)
+
+    console.log("Requesting", url, fetch_init)
+
+    return fetch(url, fetch_init)
     .then(res => !res.ok? res.text()
         .then(text => Promise.reject(
             new StatusError(res.status, res.statusText, text)

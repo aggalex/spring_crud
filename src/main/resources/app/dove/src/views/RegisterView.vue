@@ -24,7 +24,7 @@ const state = reactive({
   email: "",
   password: "",
   loading: false,
-  error: null
+  error: null as String | null
 });
 
 const router = useRouter()
@@ -37,9 +37,13 @@ function register() {
     password: state.password
   })
       .then(_ => router.push("/login"))
-      .catch(err => {
+      .catch((err: Error) => {
+        let msg = err.message;
+        let start = msg.indexOf(":") + 1
+        msg = msg.slice(start)
+
+        state.error = JSON.parse(msg).error
         state.loading = false;
-        state.error = err;
       })
 }
 

@@ -56,6 +56,42 @@ public class PostsTests {
     }
 
     @Test
+    public void likePost () {
+        var poster = userRepository.save(
+                new User()
+                        .randomise(generator, faker)
+        );
+
+        var liker = userRepository.save(
+                new User()
+                        .randomise(generator, faker)
+        );
+
+        try {
+            var post = postRepository.save(
+                    new Post()
+                            .randomise(faker)
+                            .setPoster(poster)
+            );
+
+            var likes = post.getId();
+
+            post.addLike(liker);
+            postRepository.save(post);
+
+            var newLikes = postRepository.findById(post.getId())
+                    .map(Post::getLikes)
+                    .orElse(-1L);
+
+            assertEquals(poster.getId(), post.getPoster().getId());
+
+            postRepository.delete(post);
+        } finally {
+            userRepository.delete(liker);
+        }
+    }
+
+    @Test
     public void createCommentPost () {
         var poster = userRepository.save(
                 new User()

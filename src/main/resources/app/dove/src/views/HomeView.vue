@@ -1,7 +1,7 @@
 <template>
   <View class="content" keep-scroll>
     <Searchbar/>
-    <PostList/>
+    <PostList :baseCreatePostDto="null"/>
     <div class="fab-holder">
       <button class="fab">
         <Icon>add</Icon>

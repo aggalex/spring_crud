@@ -143,4 +143,19 @@ public class UserService {
         repository.clearUnverified(System.currentTimeMillis() - days);
     }
 
+    public UserInfoDto info() {
+        var principal = User.Principal.getOptional()
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED,
+                        "Not logged in"
+                ));
+
+        var user = repository.findById(principal.getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Logged in user is a ghost"
+                ));
+
+        return new UserInfoDto(user);
+    }
 }

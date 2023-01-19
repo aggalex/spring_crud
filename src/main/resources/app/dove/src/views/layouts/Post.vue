@@ -22,15 +22,14 @@
       <Icon>
         account_circle
       </Icon>
-      Poster
+      {{ state.post?.poster.username }}
     </button>
     <hr class="non-templatable">
   </span>
-  <p class="contents text">
-    {{ state.post?.body || "Title" }}
+  <p class="contents text" v-html="state.post?.body || 'Body'">
   </p>
   <div class="button-box small">
-    <button>
+    <button @click="like" v-on:click.prevent>
       <Icon>thumb_up</Icon>
       {{ state.post?.likes || "Like" }}
     </button>
@@ -79,6 +78,14 @@ function openPost() {
 
 function closePost() {
   router.back()
+}
+
+function like() {
+  if (!state.post)
+    return;
+
+  state.post.likes += 1
+  PostApi.like(state.post.id)
 }
 
 onMounted(() => props.post

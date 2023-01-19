@@ -14,6 +14,16 @@ const postApi = {
                 ...HEADERS.application.json
             },
         })
+            .then((posts) => {
+                console.log(posts)
+                return posts as PostDto[]
+            })
+    },
+
+    async like(id: number): Promise<PostDto> {
+        return request("/api/post/likes", {
+            method: 'POST',
+        })
     },
 
     async getById(id: number): Promise<PostDto> {

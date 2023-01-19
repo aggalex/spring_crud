@@ -8,6 +8,9 @@ export const useUserStore = defineStore('userData', {
         info: null as UserInfoDto | null
     }),
     actions: {
+        async init() {
+            this.info = await userApi.info()
+        },
         login(data: UserLoginDto): Promise<UserInfoDto> {
             let promise = userApi.login(data)
             promise.then(data => this.info = data)

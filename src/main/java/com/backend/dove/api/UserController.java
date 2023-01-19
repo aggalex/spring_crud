@@ -63,4 +63,10 @@ public class UserController {
         service.validation(email, token);
     }
 
+    @GetMapping("info")
+    @ResponseBody
+    public UserInfoDto info() {
+        return service.info();
+    }
+
 }

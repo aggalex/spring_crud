@@ -26,14 +26,15 @@ import type {PostDto} from "@/api/post/dto/PostDto";
 import {CONFIG} from "@/api/post/config";
 import Editor from "@/views/layouts/Editor.vue";
 import type {CreatePostDto} from "@/api/post/dto/CreatePostDto";
+import type {Pagination} from "@/util/request";
 
 interface Props {
-  loader?(): Promise<PostDto[]>,
-  baseCratePostDto: Partial<CreatePostDto> | null
+  loader?(pagination?: Pagination): Promise<PostDto[]>,
+  baseCreatePostDto: Partial<CreatePostDto> | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  baseCratePostDto: null,
+  baseCreatePostDto: null,
   loader: PostApi.get,
 })
 
@@ -47,7 +48,7 @@ interface State {
 
 function onSubmit(dto: CreatePostDto) {
   let post = PostApi.post({
-    ...props.baseCratePostDto || {},
+    ...props.baseCreatePostDto || {},
     ...dto,
   });
 

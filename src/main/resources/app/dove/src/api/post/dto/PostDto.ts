@@ -2,7 +2,10 @@ export interface PostDto {
     id: number
     title: string
     body: string
-    poster: number
+    poster: {
+        id: number,
+        username: number
+    }
     parent?: {
         id: number,
         title: string,

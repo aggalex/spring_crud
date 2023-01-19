@@ -40,14 +40,16 @@ public class Post implements HasId {
     @JoinColumn(name = "parent", referencedColumnName = "id", updatable = false)
     private Post parent;
 
+    @ManyToMany(cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "likes",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> likedBy = new HashSet<>();
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private Set<Post> comments = new HashSet<>();
-
-    @Column(name = "likes")
-    private long likes = 0;
-
-    @Column(name = "dislikes")
-    private long dislikes = 0;
 
     @Column(name = "views")
     private long views = 0;
@@ -91,8 +93,6 @@ public class Post implements HasId {
                     .map(Post::getId)
                     .orElse(null) +
                 ", comments=" + comments +
-                ", likes=" + likes +
-                ", dislikes=" + dislikes +
                 ", views=" + views +
                 '}';
     }
@@ -156,21 +156,11 @@ public class Post implements HasId {
     }
 
     public long getLikes() {
-        return likes;
+        return this.likedBy.size();
     }
 
-    public Post setLikes(long likes) {
-        this.likes = likes;
-        return this;
-    }
-
-    public long getDislikes() {
-        return dislikes;
-    }
-
-    public Post setDislikes(long dislikes) {
-        this.dislikes = dislikes;
-        return this;
+    public void addLike(User user) {
+        this.likedBy.add(user);
     }
 
     public long getViews() {
@@ -179,6 +169,11 @@ public class Post implements HasId {
 
     public Post setViews(long views) {
         this.views = views;
+        return this;
+    }
+
+    public Post view() {
+        this.setViews(this.getViews() + 1);
         return this;
     }
 

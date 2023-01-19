@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
             select p from Post p
-            join p.poster.friends f
+            left join p.poster.friends f
             where p.privatePost = false or f.id = ?1
             """)
     List<Post> getVisiblePostsFor(long userId, Pageable pageable);
@@ -28,7 +28,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
             select p from Post p
-            join p.poster.friends f
+            left join p.poster.friends f
             where ((p.privatePost = false) or (f.id = ?1)) and p.parent.id = ?2
             """)
     List<Post> getVisibleCommentsFor(

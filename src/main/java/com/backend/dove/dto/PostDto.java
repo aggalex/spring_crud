@@ -1,8 +1,39 @@
 package com.backend.dove.dto;
 
 import com.backend.dove.entity.Post;
+import com.backend.dove.entity.User;
 
 public class PostDto {
+
+    public static class PosterDto {
+
+        String username;
+
+        long id;
+
+        public PosterDto(User user) {
+            setUsername(user.getUsername());
+            setId(user.getId());
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public PosterDto setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public PosterDto setId(long id) {
+            this.id = id;
+            return this;
+        }
+    }
 
     long id;
 
@@ -10,13 +41,11 @@ public class PostDto {
 
     String body;
 
-    long poster;
+    PosterDto poster;
 
     PostParentDto parent;
 
     long likes;
-
-    long dislikes;
 
     long views;
 
@@ -31,11 +60,10 @@ public class PostDto {
         setBody(post.getBody());
         setId(post.getId());
         setDeleted(post.isDeleted());
-        setPoster(post.getPoster().getId());
+        setPoster(new PosterDto(post.getPoster()));
         if (post.getParent() != null)
             setParent(new PostParentDto(post.getParent()));
         setLikes(post.getLikes());
-        setDislikes(post.getDislikes());
         setViews(post.getViews());
     }
 
@@ -66,11 +94,11 @@ public class PostDto {
         return this;
     }
 
-    public long getPoster() {
+    public PosterDto getPoster() {
         return poster;
     }
 
-    public PostDto setPoster(long poster) {
+    public PostDto setPoster(PosterDto poster) {
         this.poster = poster;
         return this;
     }
@@ -90,15 +118,6 @@ public class PostDto {
 
     public PostDto setLikes(long likes) {
         this.likes = likes;
-        return this;
-    }
-
-    public long getDislikes() {
-        return dislikes;
-    }
-
-    public PostDto setDislikes(long dislikes) {
-        this.dislikes = dislikes;
         return this;
     }
 

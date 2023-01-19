@@ -29,6 +29,14 @@ const userApi = {
             body: JSON.stringify(dto)
         })
     },
+    async info(): Promise<UserInfoDto> {
+        return request("/api/user/info", {
+            method: 'GET',
+            headers: {
+                ...HEADERS.application.json
+            },
+        })
+    }
 }
 
 export default api(

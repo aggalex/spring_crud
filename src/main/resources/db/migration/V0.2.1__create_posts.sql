@@ -4,8 +4,6 @@ CREATE TABLE IF NOT EXISTS "posts" (
     body VARCHAR(10000) NOT NULL,
     poster BIGINT NOT NULL,
     parent BIGINT,
-    likes BIGINT DEFAULT 0,
-    dislikes BIGINT DEFAULT 0,
     views BIGINT DEFAULT 0,
     deleted BOOLEAN DEFAULT false,
     private BOOLEAN DEFAULT false,

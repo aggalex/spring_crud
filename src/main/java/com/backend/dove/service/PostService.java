@@ -54,7 +54,7 @@ public class PostService {
         );
 
         return parent.map(post ->
-                        auth.map(user -> repository.getPublicComments(post, pageable))
+                        auth.map(user -> repository.getVisibleCommentsFor(user, post, pageable))
                                 .orElseGet(() -> repository.getPublicComments(post, pageable))
                 )
                 .orElseGet(() ->
@@ -62,6 +62,11 @@ public class PostService {
                                 .orElseGet(() -> repository.getPublic(pageable))
                 )
                 .stream()
+                .map(post -> {
+                    post = post.view();
+                    repository.save(post);
+                    return post;
+                })
                 .map(PostDto::new)
                 .collect(Collectors.toList());
     }
@@ -88,6 +93,10 @@ public class PostService {
                         "Post is private"
                 );
         }
+
+        post.view();
+
+        repository.save(post);
 
         return new PostDto(post);
     }
@@ -118,6 +127,25 @@ public class PostService {
         );
 
         return new PostDto(post);
+    }
+
+    public void like(Long postId) {
+        var post = repository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Referenced post does not exist"
+                ));
+
+        var auth = User.Principal.get();
+
+        var user = userRepository.findById(auth.getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Logged in user is a ghost"
+                ));
+
+        post.addLike(user);
+        repository.save(post);
     }
 
     public PostDto update(UpdatePostDto postDto) {

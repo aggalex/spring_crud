@@ -25,7 +25,7 @@
 import ListItem from "@/views/components/Sidebar/ListItem.vue";
 import List from "@/views/components/Sidebar/List.vue";
 import UserMural from "@/views/components/Sidebar/UserMural.vue";
-import {computed, reactive} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import Icon from "@/views/components/Icon.vue";
 import {useUserStore} from "@/store/userStore";
 import {UserInfoDto} from "@/api/user/dto/UserInfoDto";
@@ -35,6 +35,7 @@ let router = useRouter()
 
 let userStore = useUserStore();
 let info = computed(() => userStore.info as UserInfoDto | null)
+onMounted(() => userStore.init());
 
 let state = reactive({
   show: true

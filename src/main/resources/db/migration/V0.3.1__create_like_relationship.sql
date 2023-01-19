@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS likes (
+    user_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES "posts"(id) ON DELETE CASCADE
+)

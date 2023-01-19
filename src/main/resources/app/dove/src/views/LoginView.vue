@@ -5,7 +5,7 @@
       <input placeholder="email" v-model="state.email" type="email"/>
       <input placeholder="password" v-model="state.password" type="password">
       <UserViewButton @click="login" :loading="state.loading">Login</UserViewButton>
-      <h4 class="error" v-if="state.error">{{ state.error.error }}</h4>
+      <h4 class="error" v-if="state.error">{{ state.error }}</h4>
     </div>
   </View>
 </template>
@@ -23,7 +23,7 @@ const state = reactive({
   email: "",
   password: "",
   loading: false,
-  error: null
+  error: null as String | null
 });
 
 const store = useUserStore()
@@ -36,9 +36,13 @@ function login() {
     password: state.password
   })
       .then(_ => router.push("/"))
-      .catch(err => {
+      .catch((err: Error) => {
+        let msg = err.message;
+        let start = msg.indexOf(":") + 1
+        msg = msg.slice(start)
+
+        state.error = JSON.parse(msg).error
         state.loading = false;
-        state.error = err;
       })
 }
 
