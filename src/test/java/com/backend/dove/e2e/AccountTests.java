@@ -1,6 +1,5 @@
 package com.backend.dove.e2e;
 
-import com.backend.dove.dto.UserInfoDto;
 import com.backend.dove.dto.UserRegisterDto;
 import com.backend.dove.entity.User;
 import com.backend.dove.repository.UserRepository;
@@ -10,7 +9,6 @@ import org.jsoup.Jsoup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,12 +19,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.subethamail.wiser.Wiser;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,6 +70,15 @@ public class AccountTests {
                 post("/api/user/register")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(registerDto))
+                        .with(csrf())
+        );
+    }
+
+    private ResultActions validate(User user) throws Exception {
+        return mvc.perform(
+                get("/api/user/validate")
+                        .param("email", user.getEmail())
+                        .param("token", user.getVerificationToken())
                         .with(csrf())
         );
     }
@@ -152,6 +158,10 @@ public class AccountTests {
         );
 
         register().andExpect(
+                status().isOk()
+        );
+
+        validate(userRepository.getUserByEmail("alexOfTheBlock@gmail.com")).andExpect(
                 status().isOk()
         );
 
