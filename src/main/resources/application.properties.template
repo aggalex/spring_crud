@@ -1,5 +1,5 @@
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
-spring.datasource.password=RY934QYRT940YT9Q3YR94R9B4YQOYCV48965R4768QT70RUtyc3490qyt94y8r94yt749qy8t3490qy8rt904yuq3oyr90
+spring.datasource.password=a2K130No2UJ0MWq8dkMR2Gygub8le1mYibwKG2Y5g6HhwxAeYR
 spring.datasource.username=postgres
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.hikari.schema=postgres
@@ -7,6 +7,7 @@ spring.datasource.hikari.schema=postgres
 header.allowed.origin=http://localhost:5173
 
 registration.require-verification-mail=false
+registration.enable-whitelist=false
 
 logging.level.org.springframework.security=DEBUG
 
