@@ -3,7 +3,7 @@ package com.backend.dove.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "\"Whitelist\"")
+@Table(name = "\"Whitelist\"")
 public class Whitelist implements EmailEntity {
 
     @Id

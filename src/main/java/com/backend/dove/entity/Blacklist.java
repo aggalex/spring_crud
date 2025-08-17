@@ -3,7 +3,7 @@ package com.backend.dove.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "\"Blacklist\"")
+@Table(name = "\"Blacklist\"")
 public class Blacklist implements EmailEntity {
 
     @Id
