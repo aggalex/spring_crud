@@ -14,7 +14,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "\"User\"")
-public class User implements HasId {
+public class User implements HasId, EmailEntity {
 
     public enum Role implements GrantedAuthority {
         ADMIN, USER;

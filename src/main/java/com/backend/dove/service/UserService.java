@@ -3,7 +3,9 @@ package com.backend.dove.service;
 
 import com.backend.dove.dto.*;
 import com.backend.dove.entity.User;
+import com.backend.dove.repository.BlacklistRepository;
 import com.backend.dove.repository.UserRepository;
+import com.backend.dove.repository.WhitelistRepository;
 import com.backend.dove.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,10 @@ public class UserService {
 
     private UserRepository repository;
 
+    private WhitelistRepository whitelistRepository;
+
+    private BlacklistRepository blacklistRepository;
+
     private PasswordEncoder passwordEncoder;
 
     private MailService mailService;
@@ -39,12 +45,20 @@ public class UserService {
     @Value("${registration.require-verification-mail}")
     private boolean requireVerificationMail;
 
+    @Value("${registration.enable-whitelist}")
+    private boolean whitelistIsEnabled;
+
+
     public UserService(UserRepository repository,
+                       WhitelistRepository whitelistRepository,
+                       BlacklistRepository blacklistRepository,
                        PasswordEncoder passwordEncoder,
                        MailService mailService,
                        PasswordGenerator generator,
                        SpringTemplateEngine templateEngine) {
         this.repository = repository;
+        this.whitelistRepository = whitelistRepository;
+        this.blacklistRepository = blacklistRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.generator = generator;
@@ -68,6 +82,13 @@ public class UserService {
             );
         }
 
+        if (user.getVerificationToken() != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Please verify your email before logging in for the first time"
+            );
+        }
+
         var authentication = user.intoToken();
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -81,6 +102,14 @@ public class UserService {
 
     public void register(UserRegisterDto registerDto, User.Role role) throws IOException {
         var token = requireVerificationMail? generator.generate(): null;
+
+        if (blacklistRepository.existsByEmail(registerDto.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email is blacklisted");
+        }
+
+        if (whitelistIsEnabled && !whitelistRepository.existsByEmail(registerDto.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email is not whitelisted");
+        }
 
         var user = new User()
                 .setEmail(registerDto.getEmail())
